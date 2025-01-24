@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © MageWorx. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="email_order_set_template_vars_before">
+        <observer name="add_gift_card_to_order_email" instance="MageWorx\GiftCardsEmail\Observer\AddGiftCardCodeToEmail" />
+    </event>
+</config>
