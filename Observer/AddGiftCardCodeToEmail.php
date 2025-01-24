@@ -33,11 +33,14 @@ class AddGiftCardCodeToEmail implements ObserverInterface
      */
     public function execute(Observer $observer): void
     {
-        $templateVars = $observer->getData('templateVars');
-        $order        = $observer->getData('order');
+        /** @var \Magento\Framework\DataObject $transport */
+        $transport = $observer->getTransport();
+        /** @var \Magento\Sales\Model\Order $order */
+        $order        = $transport->getData('order');
+        $templateVars = $transport->getData();
 
         $giftCardDescription = $order->getData('mageworx_giftcards_description');
-        $giftCardPlainCode   = $this->getGiftCardCode($order->getId());
+        $giftCardPlainCode   = $this->getGiftCardCode((int)$order->getId());
 
         if ($giftCardDescription) {
             $templateVars['mw_gift_card_description'] = $giftCardDescription;
@@ -47,7 +50,9 @@ class AddGiftCardCodeToEmail implements ObserverInterface
             $templateVars['mw_gift_card_code'] = $giftCardPlainCode;
         }
 
-        $observer->setData('templateVars', $templateVars);
+        $transport->setData($templateVars);
+        $observer->setData('transport', $transport);
+        $observer->setData('transportObject', $transport);
     }
 
     /**
